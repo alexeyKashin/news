@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<views xmlns="http://schemas.haulmont.com/cuba/view.xsd">
+    <view class="a.kashin.news.entity.Item"
+          extends="_local"
+          name="item-with-site-view">
+        <property name="site"
+                  view="_minimal">
+            <property name="url"/>
+        </property>
+    </view>
+</views>

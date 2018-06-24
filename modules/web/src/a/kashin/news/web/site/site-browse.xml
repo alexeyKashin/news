@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://browseCaption"
+        class="a.kashin.news.web.site.SiteBrowse"
+        focusComponent="sitesTable"
+        lookupComponent="sitesTable"
+        messagesPack="a.kashin.news.web.site">
+    <dsContext>
+        <groupDatasource id="sitesDs"
+                         class="a.kashin.news.entity.Site"
+                         view="_local">
+            <query>
+                <![CDATA[select e from news$Site e]]>
+            </query>
+        </groupDatasource>
+    </dsContext>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="sitesTable"
+            spacing="true">
+        <filter id="filter"
+                applyTo="sitesTable"
+                datasource="sitesDs">
+            <properties include=".*"/>
+        </filter>
+        <groupTable id="sitesTable"
+                    width="100%">
+            <actions>
+                <action id="create"/>
+                <action id="edit"/>
+                <action id="refresh"/>
+                <action id="remove"/>
+            </actions>
+            <columns>
+                <column id="name"/>
+                <column id="url"/>
+            </columns>
+            <rows datasource="sitesDs"/>
+            <rowsCount/>
+            <buttonsPanel id="buttonsPanel"
+                          alwaysVisible="true">
+                <button id="createBtn" stylename="primary"
+                        action="sitesTable.create"/>
+                <button id="editBtn" stylename="friendly"
+                        action="sitesTable.edit"/>
+                <button id="refreshBtn" stylename="friendly"
+                        action="sitesTable.refresh"/>
+                <button id="removeBtn" stylename="danger"
+                        action="sitesTable.remove"/>
+            </buttonsPanel>
+        </groupTable>
+    </layout>
+</window>

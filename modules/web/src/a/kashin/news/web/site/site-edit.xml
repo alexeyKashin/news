@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://editorCaption"
+        class="a.kashin.news.web.site.SiteEdit"
+        datasource="siteDs"
+        focusComponent="fieldGroup"
+        messagesPack="a.kashin.news.web.site">
+    <dsContext>
+        <datasource id="siteDs"
+                    class="a.kashin.news.entity.Site"
+                    view="_local"/>
+    </dsContext>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="scrollBox"
+            spacing="true">
+        <scrollBox id="scrollBox"
+                   spacing="true">
+            <fieldGroup id="fieldGroup"
+                        datasource="siteDs">
+                <column width="250px">
+                    <field property="name"/>
+                    <field property="type"/>
+                    <field property="feedTag"/>
+                    <field property="channelTag"/>
+                    <field property="itemClass"/>
+                    <field property="titleClass"/>
+                    <field property="descriptionClass"/>
+                    <field property="publishedDateClass"/>
+                    <field property="linkClass"/>
+                </column>
+                <column width="250px">
+                    <field property="url"/>
+                    <field property="contentType"/>
+                    <field property="feedClass"/>
+                    <field property="channelClassName"/>
+                    <field property="itemTag"/>
+                    <field property="titleTag"/>
+                    <field property="descriptionTag"/>
+                    <field property="publishedDateTag"/>
+                    <field property="linkTag"/>
+                </column>
+            </fieldGroup>
+        </scrollBox>
+        <frame id="windowActions"
+               screen="extendedEditWindowActions"/>
+    </layout>
+</window>

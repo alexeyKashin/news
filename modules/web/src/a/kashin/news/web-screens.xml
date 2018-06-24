@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<screen-config xmlns="http://schemas.haulmont.com/cuba/screens.xsd">
+    <screen id="news$Site.browse"
+            template="a/kashin/news/web/site/site-browse.xml"/>
+    <screen id="news$Site.edit"
+            template="a/kashin/news/web/site/site-edit.xml"/>
+    <screen id="news$Item.browse"
+            template="a/kashin/news/web/item/item-browse.xml"/>
+</screen-config>
