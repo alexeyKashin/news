@@ -1,9 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!--
-  ~ Copyright (c) 2017 Haulmont Technology Ltd. All Rights Reserved.
-  ~ Haulmont Technology proprietary and confidential.
-  ~ Use is subject to license terms.
-  -->
 <window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
         caption="msg://caption"
         class="a.kashin.news.web.item.ItemBrowse"
@@ -18,7 +13,7 @@
                          class="a.kashin.news.entity.Item"
                          view="_local">
             <query>
-                <![CDATA[select e from news$Item e]]>
+                <![CDATA[select e from news$Item e order by e.date desc]]>
             </query>
         </groupDatasource>
     </dsContext>
@@ -62,8 +57,8 @@
                     </actions>
                     <columns>
                         <column id="name"/>
-                        <column id="link"/>
                         <column id="date"/>
+                        <column id="link"/>
                     </columns>
                     <rows datasource="itemsDs"/>
                     <rowsCount/>
@@ -73,39 +68,31 @@
                                 action="table.create"/>
                         <button id="editBtn"
                                 action="table.edit"/>
-                        <button id="removeBtn"
-                                action="table.remove"/>
                         <button id="refreshBtn"
                                 action="table.refresh"/>
+                        <button id="removeBtn"
+                                action="table.remove"/>
                     </buttonsPanel>
                 </groupTable>
             </vbox>
             <vbox id="editBox"
                   expand="fieldGroupBox"
-                  height="100%"
+                  height="100%" width="100%"
                   margin="false,false,false,true"
                   spacing="true">
                 <scrollBox id="fieldGroupBox">
-                    <fieldGroup id="fieldGroup"
+                    <fieldGroup id="fieldGroup" width="100%" editable="false"
                                 datasource="itemDs">
-                        <column width="250px">
+                        <column width="100%">
                             <field property="name"/>
+                            <field property="date"/>
                             <field property="description"
                                    rows="5"/>
                             <field property="link"/>
                             <field property="site"/>
-                            <field property="date"/>
                         </column>
                     </fieldGroup>
                 </scrollBox>
-                <hbox id="actionsPane"
-                      spacing="true"
-                      visible="false">
-                    <button id="saveBtn"
-                            action="save"/>
-                    <button id="cancelBtn"
-                            action="cancel"/>
-                </hbox>
             </vbox>
         </split>
     </layout>
