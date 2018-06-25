@@ -35,10 +35,10 @@ public class ItemWorker {
             Item item = metadata.create(Item.class);
             item.setName(name);
             item.setDescription(description);
-            if (!site.getLinkClass().equals("")) {
+            if (site.getLinkClass() != null) {
                 item.setLink(element.getElementsByClass(site.getLinkClass()).tagName(site.getLinkTag()).text());
             }
-            if (!site.getPublishedDateClass().equals("")) {
+            if (site.getPublishedDateClass() != null) {
                 try {
                     Date pubDate = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.ENGLISH)
                             .parse(element.getElementsByClass(site.getPublishedDateClass()).

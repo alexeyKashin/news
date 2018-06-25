@@ -37,11 +37,7 @@ public class HtmlNewsWorker implements NewsWorker {
             Document document = connection.parse();
             Elements elements = null;
 
-            if (site.getFeedClass() != null) {
-                elements = document.body().getElementsByClass(site.getFeedClass());
-            } else if (site.getFeedTag() != null){
-                elements = document.body().getElementsByTag(site.getFeedTag());
-            } else if (site.getItemClass() != null) {
+            if (site.getItemClass() != null) {
                 elements = document.body().getElementsByClass(site.getItemClass());
             } else if (site.getItemTag() != null){
                 elements = document.body().getElementsByTag(site.getItemTag());

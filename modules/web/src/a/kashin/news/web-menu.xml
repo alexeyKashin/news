@@ -2,4 +2,6 @@
 <menu-config xmlns="http://schemas.haulmont.com/cuba/menu.xsd">
     <item insertBefore="administration"
           screen="news$Site.browse"/>
+    <item insertBefore="administration"
+          screen="news$Item.browse"/>
 </menu-config>

@@ -5,6 +5,8 @@ import a.kashin.news.core.XmlNewsWorker;
 import a.kashin.news.entity.ContentType;
 import a.kashin.news.entity.Item;
 import a.kashin.news.entity.Site;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -16,6 +18,7 @@ public class NewsServiceBean implements NewsService {
     private HtmlNewsWorker htmlNewsWorker;
     @Inject
     private XmlNewsWorker xmlNewsWorker;
+    private Logger logger = LoggerFactory.getLogger(NewsServiceBean.class);
 
     @Override
     public List<Item> getItems(Site site) {
@@ -25,6 +28,7 @@ public class NewsServiceBean implements NewsService {
         else
             items = xmlNewsWorker.getItems(site);
 
+        logger.debug("Создано [" + items.size() + "] новостей.");
         return items;
     }
 }

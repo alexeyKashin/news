@@ -40,13 +40,13 @@ public class XmlNewsWorker implements NewsWorker {
             Document document = connection.parse();
             Elements elements = null;
 
-            if (site.getFeedTag() != null){
+            if (site.getFeedTag() != null) {
                 elements = document.body().getElementsByTag(site.getFeedTag());
             } else if (site.getChannelTag() != null) {
                 elements = document.getElementsByTag(site.getChannelTag());
             }
 
-            if (elements != null && site.getItemTag() != null) {
+            if (elements != null) {
                 for (Element element : elements) {
                     items = itemWorker.createItemsByRootElement(element, items, site);
                 }

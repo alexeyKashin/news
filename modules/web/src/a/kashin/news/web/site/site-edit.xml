@@ -41,6 +41,7 @@
                     <field property="linkTag"/>
                 </column>
             </fieldGroup>
+            <button id="startBtn" caption="msg://start" invoke="onStart"/>
         </scrollBox>
         <frame id="windowActions"
                screen="extendedEditWindowActions"/>

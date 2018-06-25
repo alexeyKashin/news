@@ -89,10 +89,13 @@
                             <field property="description"
                                    rows="5"/>
                             <field property="link"/>
-                            <field property="site"/>
                         </column>
                     </fieldGroup>
                 </scrollBox>
+                <hbox id="actionsPane"
+                      spacing="true"
+                      visible="false">
+                </hbox>
             </vbox>
         </split>
     </layout>
