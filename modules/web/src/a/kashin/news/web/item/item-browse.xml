@@ -50,8 +50,6 @@
                 <groupTable id="table"
                             width="100%">
                     <actions>
-                        <action id="create"/>
-                        <action id="edit"/>
                         <action id="refresh"/>
                         <action id="remove"/>
                     </actions>
@@ -64,13 +62,9 @@
                     <rowsCount/>
                     <buttonsPanel id="buttonsPanel"
                                   alwaysVisible="true">
-                        <button id="createBtn"
-                                action="table.create"/>
-                        <button id="editBtn"
-                                action="table.edit"/>
-                        <button id="refreshBtn"
+                        <button id="refreshBtn" stylename="friendly"
                                 action="table.refresh"/>
-                        <button id="removeBtn"
+                        <button id="removeBtn" stylename="danger"
                                 action="table.remove"/>
                     </buttonsPanel>
                 </groupTable>
