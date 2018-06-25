@@ -31,6 +31,7 @@ public class ItemWorker {
 
     public Item craeteItemByElement(Element element, Site site) {
         try {
+
             String name = element.getElementsByClass(site.getTitleClass()).tagName(site.getTitleTag()).text();
 
             if (name.isEmpty()) return null;
@@ -92,6 +93,8 @@ public class ItemWorker {
                 items.add(item);
                 commitContext.addInstanceToCommit(item);
             }
+            // TODO Отладка
+            break;
         }
         dataManager.commit(commitContext);
         return items;
