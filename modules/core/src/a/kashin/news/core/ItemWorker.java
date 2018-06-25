@@ -2,6 +2,7 @@ package a.kashin.news.core;
 
 import a.kashin.news.entity.Item;
 import a.kashin.news.entity.Site;
+import com.haulmont.cuba.core.Persistence;
 import com.haulmont.cuba.core.global.CommitContext;
 import com.haulmont.cuba.core.global.DataManager;
 import com.haulmont.cuba.core.global.Metadata;
@@ -24,36 +25,60 @@ public class ItemWorker {
     private Metadata metadata;
     @Inject
     private DataManager dataManager;
+    @Inject
+    private Persistence persistence;
     private Logger log = LoggerFactory.getLogger(ItemWorker.class);
 
     public Item craeteItemByElement(Element element, Site site) {
         try {
             String name = element.getElementsByClass(site.getTitleClass()).tagName(site.getTitleTag()).text();
+
+            if (name.isEmpty()) return null;
+            if (checkItemDouble(name, site)) return null;
+
             String description = element.getElementsByClass(site.getDescriptionClass()).text();
-            if (name.equals("") || description.equals(""))
-                return null;
+            String link = null;
+            if (site.getLinkClass() != null) {
+                link = element.getElementsByClass(site.getLinkClass()).tagName(site.getLinkTag()).text();
+            }
+
             Item item = metadata.create(Item.class);
             item.setName(name);
             item.setDescription(description);
-            if (site.getLinkClass() != null) {
-                item.setLink(element.getElementsByClass(site.getLinkClass()).tagName(site.getLinkTag()).text());
-            }
-            if (site.getPublishedDateClass() != null) {
-                try {
-                    Date pubDate = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.ENGLISH)
-                            .parse(element.getElementsByClass(site.getPublishedDateClass()).
-                                    tagName(site.getPublishedDateTag()).text());
-                    item.setDate(pubDate);
-                } catch (ParseException pe) {
-                    log.error(pe.getMessage());
-                    item.setDate(new Date());
-                }
-            } else {
-                item.setDate(new Date());
-            }
+            item.setLink(link);
+            item.setDate(parsePublishDate(element, site));
+
+
             return item;
         } catch (Exception exc){
             log.error(exc.getMessage());
+        }
+        return null;
+    }
+
+    private boolean checkItemDouble(String name, Site site) {
+        Item item = persistence.callInTransaction(em ->
+                (Item) em.createQuery("select e from news$Item e where e.name = :name and e.site.id = :siteId")
+                .setParameter("name", name)
+                .setParameter("siteId", site.getId())
+                .getFirstResult());
+        if (item != null) {
+            log.debug("Обнаружена дублирующая запись [" + name + "]");
+            return true;
+        }
+        return false;
+    }
+
+    private Date parsePublishDate(Element element, Site site) {
+        if (site.getPublishedDateClass() != null) {
+            try {
+                return new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.ENGLISH)
+                        .parse(element.getElementsByClass(site.getPublishedDateClass()).
+                                tagName(site.getPublishedDateTag()).text());
+
+            } catch (ParseException e) {
+                log.error(e.getMessage());
+            }
         }
         return null;
     }
