@@ -38,17 +38,15 @@ public class XmlNewsWorker implements NewsWorker {
         try {
             Connection.Response connection = Jsoup.connect(site.getUrl()).execute();
             Document document = connection.parse();
-            Elements elements = null;
-
-            if (site.getFeedTag() != null) {
-                elements = document.body().getElementsByTag(site.getFeedTag());
-            } else if (site.getChannelTag() != null) {
-                elements = document.getElementsByTag(site.getChannelTag());
-            }
+            Elements elements = document.getElementsByTag(site.getItemTag());
 
             if (elements != null) {
                 for (Element element : elements) {
-                    items = itemWorker.createItemsByRootElement(element, items, site);
+                    Item item = itemWorker.craeteItemByElement(element, site);
+                    if (item != null) {
+                        items.add(item);
+                        commitContext.addInstanceToCommit(item);
+                    }
                 }
             }
         } catch (IOException e) {

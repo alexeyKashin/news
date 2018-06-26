@@ -23,7 +23,7 @@
                 datasource="sitesDs">
             <properties include=".*"/>
         </filter>
-        <groupTable id="sitesTable"
+        <groupTable id="sitesTable" multiselect="true"
                     width="100%">
             <actions>
                 <action id="create"/>

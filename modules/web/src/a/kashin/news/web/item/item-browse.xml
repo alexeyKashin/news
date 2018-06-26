@@ -47,7 +47,7 @@
                         datasource="itemsDs">
                     <properties include=".*"/>
                 </filter>
-                <groupTable id="table"
+                <groupTable id="table" multiselect="true"
                             width="100%">
                     <actions>
                         <action id="refresh"/>
@@ -79,10 +79,11 @@
                                 datasource="itemDs">
                         <column width="100%">
                             <field property="name"/>
-                            <field property="date"/>
+                            <field property="date" width="50%"/>
                             <field property="description"
-                                   rows="5"/>
+                                   rows="10"/>
                             <field property="link"/>
+                            <field property="site"/>
                         </column>
                     </fieldGroup>
                 </scrollBox>

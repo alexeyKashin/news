@@ -3,20 +3,17 @@ package a.kashin.news.core;
 import a.kashin.news.entity.Item;
 import a.kashin.news.entity.Site;
 import com.haulmont.cuba.core.Persistence;
-import com.haulmont.cuba.core.global.CommitContext;
-import com.haulmont.cuba.core.global.DataManager;
 import com.haulmont.cuba.core.global.Metadata;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 @Component
@@ -24,37 +21,51 @@ public class ItemWorker {
     @Inject
     private Metadata metadata;
     @Inject
-    private DataManager dataManager;
-    @Inject
     private Persistence persistence;
     private Logger log = LoggerFactory.getLogger(ItemWorker.class);
 
     public Item craeteItemByElement(Element element, Site site) {
         try {
-
-            String name = element.getElementsByClass(site.getTitleClass()).tagName(site.getTitleTag()).text();
+            String name = getAttributeFromElement(site.getTitleClass(), site.getTitleTag(), element);
 
             if (name.isEmpty()) return null;
             if (checkItemDouble(name, site)) return null;
 
-            String description = element.getElementsByClass(site.getDescriptionClass()).text();
-            String link = null;
-            if (site.getLinkClass() != null) {
-                link = element.getElementsByClass(site.getLinkClass()).tagName(site.getLinkTag()).text();
-            }
+            String description = getAttributeFromElement(site.getDescriptionClass(), site.getDescriptionTag(), element);
+            String link = getLink(element, site);
 
             Item item = metadata.create(Item.class);
             item.setName(name);
             item.setDescription(description);
             item.setLink(link);
             item.setDate(parsePublishDate(element, site));
-
+            item.setSite(site);
 
             return item;
-        } catch (Exception exc){
-            log.error(exc.getMessage());
+        } catch (Exception e){
+            log.error(e.getMessage());
         }
         return null;
+    }
+
+
+    private String getLink(Element element, Site site) {
+        String link = getAttributeFromElement(site.getLinkClass(), site.getLinkTag(), element);
+        if (link.isEmpty()) {
+            link = element.select("a").first().attr("abs:href");
+        }
+        return link;
+    }
+
+    private String getAttributeFromElement(@Nullable String siteClass, @Nullable String siteTag, Element element) {
+        if (siteClass != null && siteTag != null) {
+            return element.getElementsByClass(siteClass).tagName(siteTag).text();
+        } else if (siteClass != null) {
+            return element.getElementsByClass(siteClass).text();
+        } else if (siteTag != null) {
+            return element.getElementsByTag(siteTag).text();
+        }
+        return "";
     }
 
     private boolean checkItemDouble(String name, Site site) {
@@ -71,32 +82,13 @@ public class ItemWorker {
     }
 
     private Date parsePublishDate(Element element, Site site) {
-        if (site.getPublishedDateClass() != null) {
-            try {
-                return new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.ENGLISH)
-                        .parse(element.getElementsByClass(site.getPublishedDateClass()).
-                                tagName(site.getPublishedDateTag()).text());
-
-            } catch (ParseException e) {
-                log.error(e.getMessage());
-            }
+        String dateString = getAttributeFromElement(site.getPublishedDateClass(), site.getPublishedDateTag(), element);
+        if (dateString.isEmpty()) return new Date();
+        try {
+            return new SimpleDateFormat(site.getDatePattern(), Locale.ENGLISH).parse(dateString);
+        } catch (ParseException e) {
+            log.error(e.getMessage());
         }
-        return null;
-    }
-
-    public List<Item> createItemsByRootElement(Element element, List<Item> items, Site site) {
-        CommitContext commitContext = new CommitContext();
-        Elements itemElements = element.getElementsByTag(site.getItemTag());
-        for (Element itemElement : itemElements) {
-            Item item = craeteItemByElement(itemElement, site);
-            if (item != null) {
-                items.add(item);
-                commitContext.addInstanceToCommit(item);
-            }
-            // TODO Отладка
-            break;
-        }
-        dataManager.commit(commitContext);
-        return items;
+        return new Date();
     }
 }

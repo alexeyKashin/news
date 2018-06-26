@@ -18,17 +18,16 @@ public class NewsServiceBean implements NewsService {
     private HtmlNewsWorker htmlNewsWorker;
     @Inject
     private XmlNewsWorker xmlNewsWorker;
-    private Logger logger = LoggerFactory.getLogger(NewsServiceBean.class);
+    private Logger log = LoggerFactory.getLogger(NewsServiceBean.class);
 
     @Override
-    public List<Item> getItems(Site site) {
+    public void parseSite(Site site) {
         List<Item> items;
         if (site.getContentType() == ContentType.html)
             items = htmlNewsWorker.getItems(site);
         else
             items = xmlNewsWorker.getItems(site);
 
-        logger.debug("Создано [" + items.size() + "] новостей.");
-        return items;
+        log.debug("Создано [" + items.size() + "] новостей.");
     }
 }

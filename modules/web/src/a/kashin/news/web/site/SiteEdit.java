@@ -7,9 +7,10 @@ import com.haulmont.cuba.gui.components.AbstractEditor;
 import javax.inject.Inject;
 
 public class SiteEdit extends AbstractEditor<Site> {
+
     @Inject
     private NewsService newsService;
     public void onStart() {
-        newsService.getItems(getItem());
+        newsService.parseSite(getItem());
     }
 }

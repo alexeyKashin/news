@@ -15,26 +15,14 @@ public class Site extends StandardEntity {
     @Column(name = "NAME")
     protected String name;
 
+    @Column(name = "DATE_PATTERN")
+    protected String datePattern;
+
     @Column(name = "URL")
     protected String url;
 
-    @Column(name = "TYPE_")
-    protected Integer type;
-
     @Column(name = "CONTENT_TYPE")
     protected Integer contentType;
-
-    @Column(name = "FEED_TAG")
-    protected String feedTag;
-
-    @Column(name = "FEED_CLASS")
-    protected String feedClass;
-
-    @Column(name = "CHANNEL_TAG")
-    protected String channelTag;
-
-    @Column(name = "CHANNEL_CLASS_NAME")
-    protected String channelClassName;
 
     @Column(name = "ITEM_CLASS")
     protected String itemClass;
@@ -66,6 +54,15 @@ public class Site extends StandardEntity {
     @Column(name = "LINK_TAG")
     protected String linkTag;
 
+    public void setDatePattern(String datePattern) {
+        this.datePattern = datePattern;
+    }
+
+    public String getDatePattern() {
+        return datePattern;
+    }
+
+
     public void setName(String name) {
         this.name = name;
     }
@@ -82,52 +79,12 @@ public class Site extends StandardEntity {
         return url;
     }
 
-    public void setType(Type type) {
-        this.type = type == null ? null : type.getId();
-    }
-
-    public Type getType() {
-        return type == null ? null : Type.fromId(type);
-    }
-
     public void setContentType(ContentType contentType) {
         this.contentType = contentType == null ? null : contentType.getId();
     }
 
     public ContentType getContentType() {
         return contentType == null ? null : ContentType.fromId(contentType);
-    }
-
-    public void setFeedTag(String feedTag) {
-        this.feedTag = feedTag;
-    }
-
-    public String getFeedTag() {
-        return feedTag;
-    }
-
-    public void setFeedClass(String feedClass) {
-        this.feedClass = feedClass;
-    }
-
-    public String getFeedClass() {
-        return feedClass;
-    }
-
-    public void setChannelTag(String channelTag) {
-        this.channelTag = channelTag;
-    }
-
-    public String getChannelTag() {
-        return channelTag;
-    }
-
-    public void setChannelClassName(String channelClassName) {
-        this.channelClassName = channelClassName;
-    }
-
-    public String getChannelClassName() {
-        return channelClassName;
     }
 
     public void setItemClass(String itemClass) {

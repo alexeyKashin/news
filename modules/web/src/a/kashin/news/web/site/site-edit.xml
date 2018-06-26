@@ -10,19 +10,20 @@
                     class="a.kashin.news.entity.Site"
                     view="_local"/>
     </dsContext>
-    <dialogMode height="600"
-                width="800"/>
+    <dialogMode closeable="true"
+                forceDialog="true"
+                height="600"
+                resizable="true"
+                width="820"/>
     <layout expand="scrollBox"
             spacing="true">
         <scrollBox id="scrollBox"
                    spacing="true">
-            <fieldGroup id="fieldGroup"
+            <fieldGroup id="fieldGroup" width="100%"
                         datasource="siteDs">
                 <column width="250px">
                     <field property="name"/>
-                    <field property="type"/>
-                    <field property="feedTag"/>
-                    <field property="channelTag"/>
+                    <field property="contentType"/>
                     <field property="itemClass"/>
                     <field property="titleClass"/>
                     <field property="descriptionClass"/>
@@ -31,9 +32,7 @@
                 </column>
                 <column width="250px">
                     <field property="url"/>
-                    <field property="contentType"/>
-                    <field property="feedClass"/>
-                    <field property="channelClassName"/>
+                    <field property="datePattern"/>
                     <field property="itemTag"/>
                     <field property="titleTag"/>
                     <field property="descriptionTag"/>
@@ -41,7 +40,9 @@
                     <field property="linkTag"/>
                 </column>
             </fieldGroup>
-            <button id="startBtn" caption="msg://start" invoke="onStart"/>
+            <button id="startBtn"
+                    caption="msg://start"
+                    invoke="onStart"/>
         </scrollBox>
         <frame id="windowActions"
                screen="extendedEditWindowActions"/>

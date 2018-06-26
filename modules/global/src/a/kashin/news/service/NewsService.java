@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface NewsService {
     String NAME = "news_NewsService";
-    List<Item> getItems(Site site);
+    void parseSite(Site site);
 }

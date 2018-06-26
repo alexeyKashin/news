@@ -28,36 +28,32 @@ public class HtmlNewsWorker implements NewsWorker {
 
     @Override
     public List<Item> getItems(Site site) {
-        List<Item> list = new ArrayList<>();
+        List<Item> items = new ArrayList<>();
         CommitContext commitContext = new CommitContext();
-        int index = 0;
+
+        if (site.getItemTag() == null) {
+            log.error("Не заполнено поле \"itemClass\" для получения новостей " + site.getName());
+            return null;
+        }
 
         try {
             Connection.Response connection = Jsoup.connect(site.getUrl()).execute();
             Document document = connection.parse();
-            Elements elements = null;
-
-            if (site.getItemClass() != null) {
-                elements = document.body().getElementsByClass(site.getItemClass());
-            } else if (site.getItemTag() != null){
-                elements = document.body().getElementsByTag(site.getItemTag());
-            }
+            Elements elements = document.body().getElementsByClass(site.getItemClass());
 
             if (elements != null) {
                 for (Element element : elements) {
                     Item item = itemWorker.craeteItemByElement(element, site);
                     if (item != null) {
-                        list.add(item);
+                        items.add(item);
                         commitContext.addInstanceToCommit(item);
                     }
-                    index++;
-                    if (index > 0) break;
                 }
             }
         } catch (IOException e) {
             log.error("Ошибка при получении данных сайта " + site.getName() + ": " + e.getMessage());;
         }
         dataManager.commit(commitContext);
-        return list;
+        return items;
     }
 }
