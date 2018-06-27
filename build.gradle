@@ -194,3 +194,20 @@ task restart(dependsOn: ['stop', ":${modulePrefix}-core:deploy", ":${modulePrefi
 task wrapper(type: Wrapper) {
     gradleVersion = '4.3.1'
 }
+
+task jelasticBuildWar(type: CubaWarBuilding) {
+    appHome = '..'
+    webXmlPath = 'modules/web/web/WEB-INF/single-war-web.xml'
+    appProperties = ['cuba.automaticDatabaseUpdate' : true,
+'cuba.logDir' : '${catalina.base}/logs']
+    includeJdbcDriver = true
+    includeContextXml = true
+    coreContextXmlPath = 'modules/core/web/META-INF/jelastic-context.xml'
+}
+
+task jelasticDeployWar(type: CubaJelasticDeploy, dependsOn: jelasticBuildWar) {
+    email = rootProject.hasProperty('jelasticEmail') ? rootProject['jelasticEmail'] : ''
+    password = rootProject.hasProperty('jelasticPassword') ? rootProject['jelasticPassword'] : ''
+    hostUrl = 'app.jelastic.regruhosting.ru'
+    environment = 'env-2508682'
+}

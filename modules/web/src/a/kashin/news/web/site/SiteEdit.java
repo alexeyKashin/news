@@ -11,6 +11,7 @@ public class SiteEdit extends AbstractEditor<Site> {
     @Inject
     private NewsService newsService;
     public void onStart() {
-        newsService.parseSite(getItem());
+        Integer count = newsService.parseSite(getItem());
+        showNotification("Загружено " + count + " новостей", NotificationType.TRAY_HTML);
     }
 }

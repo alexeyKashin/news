@@ -21,7 +21,7 @@ public class NewsServiceBean implements NewsService {
     private Logger log = LoggerFactory.getLogger(NewsServiceBean.class);
 
     @Override
-    public void parseSite(Site site) {
+    public Integer parseSite(Site site) {
         List<Item> items;
         if (site.getContentType() == ContentType.html)
             items = htmlNewsWorker.getItems(site);
@@ -29,5 +29,6 @@ public class NewsServiceBean implements NewsService {
             items = xmlNewsWorker.getItems(site);
 
         log.debug("Создано [" + items.size() + "] новостей.");
+        return items.size();
     }
 }
