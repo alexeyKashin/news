@@ -27,7 +27,7 @@ public class HtmlNewsWorker implements NewsWorker {
     private Logger log = LoggerFactory.getLogger(HtmlNewsWorker.class);
 
     @Override
-    public List<Item> getItems(Site site) {
+    public List<Item> getItems(Site site) throws IOException {
         List<Item> items = new ArrayList<>();
         CommitContext commitContext = new CommitContext();
 
@@ -36,23 +36,21 @@ public class HtmlNewsWorker implements NewsWorker {
             return null;
         }
 
-        try {
-            Connection.Response connection = Jsoup.connect(site.getUrl()).execute();
-            Document document = connection.parse();
-            Elements elements = document.body().getElementsByClass(site.getItemClass());
 
-            if (elements != null) {
-                for (Element element : elements) {
-                    Item item = itemWorker.craeteItemByElement(element, site);
-                    if (item != null) {
-                        items.add(item);
-                        commitContext.addInstanceToCommit(item);
-                    }
+        Connection.Response connection = Jsoup.connect(site.getUrl()).execute();
+        Document document = connection.parse();
+        Elements elements = document.body().getElementsByClass(site.getItemClass());
+
+        if (elements != null) {
+            for (Element element : elements) {
+                Item item = itemWorker.craeteItemByElement(element, site);
+                if (item != null) {
+                    items.add(item);
+                    commitContext.addInstanceToCommit(item);
                 }
             }
-        } catch (IOException e) {
-            log.error("Ошибка при получении данных сайта " + site.getName() + ": " + e.getMessage());;
         }
+
         dataManager.commit(commitContext);
         return items;
     }

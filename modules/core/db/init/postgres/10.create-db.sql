@@ -38,10 +38,10 @@ create table NEWS_ITEM (
     DELETE_TS timestamp,
     DELETED_BY varchar(50),
     --
-    NAME varchar(255),
+    NAME varchar(2000),
     DATE_ date,
     DESCRIPTION text,
-    LINK varchar(255),
+    LINK varchar(2000),
     SITE_ID uuid,
     --
     primary key (ID)

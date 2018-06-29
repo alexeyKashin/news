@@ -78,7 +78,7 @@
                     <fieldGroup id="fieldGroup" width="100%" editable="false"
                                 datasource="itemDs">
                         <column width="100%">
-                            <field property="name"/>
+                            <field property="name" rows="3"/>
                             <field property="date" width="50%"/>
                             <field property="description"
                                    rows="10"/>

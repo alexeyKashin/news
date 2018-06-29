@@ -19,7 +19,7 @@ import javax.persistence.TemporalType;
 public class Item extends StandardEntity {
     private static final long serialVersionUID = -6133667585391315778L;
 
-    @Column(name = "NAME")
+    @Column(name = "NAME", length = 2000)
     protected String name;
 
     @Temporal(TemporalType.DATE)
@@ -30,7 +30,7 @@ public class Item extends StandardEntity {
     @Column(name = "DESCRIPTION")
     protected String description;
 
-    @Column(name = "LINK")
+    @Column(name = "LINK", length = 2000)
     protected String link;
 
     @ManyToOne(fetch = FetchType.LAZY)

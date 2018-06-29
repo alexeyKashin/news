@@ -13,6 +13,7 @@ import javax.annotation.Nullable;
 import javax.inject.Inject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 
@@ -44,14 +45,22 @@ public class ItemWorker {
             return item;
         } catch (Exception e){
             log.error(e.getMessage());
-        }
-        return null;
-    }
+            log.error(Arrays.toString(e.getStackTrace()));
+       }
+       return null;
+ }
 
 
     private String getLink(Element element, Site site) {
         String link = getAttributeFromElement(site.getLinkClass(), site.getLinkTag(), element);
-        if (link.isEmpty()) {
+        if (link.startsWith("http")) return link;
+
+        // Дополнительные способы получения гиперссылки - по аттрибуту элемента
+        if (site.getLinkClass() != null) {
+            String linkTag = site.getLinkTag();
+            if (linkTag == null) linkTag = "href";
+            link = element.getElementsByClass(site.getLinkClass()).attr("abs:" + linkTag);
+        } else {
             link = element.select("a").first().attr("abs:href");
         }
         return link;
